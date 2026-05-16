@@ -112,7 +112,8 @@ python manage.py runserver
 http://127.0.0.1:8000/
 ```
 
-
+### 6) DEMO link
+https://shrutipandey110706-commits.github.io/QB-Frontend/
 ---
 
 ##  Future Improvements
