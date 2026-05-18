@@ -5,163 +5,226 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QuickBite – Campus Food Ordering</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
-<script src="{% static 'js/script.js' %}"></script>
 </head>
 <body>
-
 <div id="toasts"></div>
 
-<!-- ══════ AUTH PAGE ══════ -->
-<div id="pg-auth">
-  <div class="auth-wrap">
-    <div class="auth-logo">
-      <div class="lmark">🍔</div>
+<!-- ░░ LANDING ░░ -->
+<div id="pg-landing">
+  <div class="land-wrap">
+    <div class="land-logo">
+      <div class="logo-mark">🍔</div>
       <h1>Quick<span>Bite</span></h1>
       <p>Campus Food Ordering Platform</p>
     </div>
-    <div class="auth-card">
-      <div class="atabs">
-        <div class="atab active" id="at-login" onclick="switchAuthTab('login')">Sign In</div>
-        <div class="atab" id="at-reg" onclick="switchAuthTab('reg')">Register</div>
+    <div class="role-grid">
+      <div class="role-card" onclick="goAuth('student')">
+        <div class="role-ico" style="background:#ff6b2b22;color:#ff6b2b">👨‍🎓</div>
+        <h3>Student</h3>
+        <p>Browse menu & order food</p>
+        <div class="role-arr"><i class="fas fa-arrow-right"></i></div>
       </div>
-
-      <!-- LOGIN -->
-      <div id="frm-login">
-        <div class="rpills">
-          <div class="rpill active" id="rp-student" onclick="setRole('student')"><i class="fas fa-graduation-cap"></i>Student</div>
-          <div class="rpill" id="rp-operator" onclick="setRole('operator')"><i class="fas fa-utensils"></i>Operator</div>
-          <div class="rpill" id="rp-admin" onclick="setRole('admin')"><i class="fas fa-shield-alt"></i>Admin</div>
-        </div>
-        <div class="fg"><label>Email</label><input id="li-em" type="email" placeholder="your@email.com"></div>
-        <div class="fg"><label>Password</label><input id="li-pw" type="password" placeholder="••••••••"></div>
-        <button class="btn btn-primary btn-full btn-lg" onclick="doLogin()">
-          <i class="fas fa-sign-in-alt"></i> Sign In
-        </button>
-        <div class="demo-box">
-          <strong>🔑 Demo Accounts (any password)</strong>
-          Student: <code>student@qb.com</code><br>
-          Operator Main: <code>op1@qb.com</code><br>
-          Operator Nescafé: <code>op2@qb.com</code><br>
-          Operator Juice: <code>op3@qb.com</code><br>
-          Admin: <code>admin@qb.com</code>
-        </div>
+      <div class="role-card" onclick="goAuth('operator')">
+        <div class="role-ico" style="background:#3b82f622;color:#3b82f6">🍽️</div>
+        <h3>Operator</h3>
+        <p>Manage canteen & orders</p>
+        <div class="role-arr"><i class="fas fa-arrow-right"></i></div>
       </div>
-
-      <!-- REGISTER -->
-      <div id="frm-reg" class="hidden">
-        <div class="fg"><label>Full Name</label><input id="rg-nm" placeholder="Your full name"></div>
-        <div class="fg"><label>Email</label><input id="rg-em" type="email" placeholder="your@email.com"></div>
-        <div class="fg"><label>Student ID</label><input id="rg-sid" placeholder="e.g. STU2024001"></div>
-        <div class="fg"><label>Password</label><input id="rg-pw" type="password" placeholder="Min 6 chars"></div>
-        <button class="btn btn-primary btn-full btn-lg" onclick="doRegister()">
-          <i class="fas fa-user-plus"></i> Create Account
-        </button>
+      <div class="role-card" onclick="goAuth('admin')">
+        <div class="role-ico" style="background:#a855f722;color:#a855f7">🛠️</div>
+        <h3>Admin</h3>
+        <p>Full platform control</p>
+        <div class="role-arr"><i class="fas fa-arrow-right"></i></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════ APP SHELL ══════ -->
-<div id="pg-app" class="hidden">
-
-  <!-- TOPBAR -->
-  <nav class="topbar">
-    <div class="tb-logo">
-      <div class="mk">🍔</div>
-      <span>Quick<em>Bite</em></span>
+<!-- ░░ AUTH ░░ -->
+<div id="pg-auth" class="hidden">
+  <div class="auth-outer">
+    <button class="back-btn" onclick="goLanding()"><i class="fas fa-arrow-left"></i> Back</button>
+    <div class="auth-logo">
+      <span id="auth-ico" class="logo-mark" style="font-size:28px">🍔</span>
+      <h1>Quick<span>Bite</span></h1>
+      <p id="auth-lbl">Portal</p>
     </div>
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <div class="atab active" id="tab-reg" onclick="switchTab('reg')">Register</div>
+        <div class="atab" id="tab-login" onclick="switchTab('login')">Sign In</div>
+      </div>
+      <!-- REGISTER -->
+      <div id="frm-reg">
+        <div id="reg-body"></div>
+        <button class="btn btn-primary btn-full btn-lg" onclick="doRegister()"><i class="fas fa-user-plus"></i> Create Account</button>
+        <p class="tab-hint">Already registered? <span onclick="switchTab('login')">Sign In</span></p>
+      </div>
+      <!-- LOGIN -->
+      <div id="frm-login" class="hidden">
+        <div class="fg"><label>Email Address</label><input id="li-em" type="email" placeholder="your@email.com"></div>
+        <div class="fg"><label>Password</label><input id="li-pw" type="password" placeholder="••••••••"></div>
+        <button class="btn btn-primary btn-full btn-lg" onclick="doLogin()"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+        <p class="tab-hint">New here? <span onclick="switchTab('reg')">Create Account</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+     STUDENT APP
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ -->
+<div id="pg-student" class="hidden app-pg">
+  <nav class="topbar">
+    <div class="tb-logo"><div class="mk">🍔</div><span>Quick<em>Bite</em></span></div>
     <div class="tb-right">
-      <div class="crt-wrap hidden" id="cart-wrap">
-        <button class="btn btn-secondary btn-sm" onclick="toggleCart()">
-          <i class="fas fa-shopping-cart"></i> Cart
-          <span class="crt-badge hidden" id="cart-badge">0</span>
-        </button>
-      </div>
-      <div class="upill">
-        <div class="uav" id="tb-av">?</div>
-        <div>
-          <div class="uname" id="tb-nm">User</div>
-          <div class="urole" id="tb-rl">Role</div>
-        </div>
-      </div>
-      <button class="btn btn-ghost btn-sm" onclick="doLogout()" title="Logout">
-        <i class="fas fa-sign-out-alt"></i>
+      <button class="cart-toggle-btn" onclick="toggleCart()">
+        <i class="fas fa-shopping-cart"></i> Cart
+        <span id="cart-badge" class="cbadge hidden">0</span>
       </button>
+      <div class="upill">
+        <div class="uav stu-color" id="s-av">S</div>
+        <div><div class="uname" id="s-nm">Student</div><div class="urole">Student</div></div>
+      </div>
     </div>
   </nav>
-
-  <!-- BODY: SIDEBAR + MAIN -->
   <div class="app-body">
     <aside class="sidebar">
-      <div class="sb-head" id="sb-head"></div>
-      <div class="sb-nav"  id="sb-nav"></div>
+      <div class="sb-info">
+        <div class="sb-role">Student Portal</div>
+        <div class="sb-sub" id="s-sid"></div>
+      </div>
+      <nav class="sb-nav">
+        <button class="sn active" id="sn-canteens" onclick="stuGo('canteens')"><i class="fas fa-store"></i>Canteens</button>
+        <button class="sn" id="sn-menu"     onclick="stuGo('menu')"><i class="fas fa-utensils"></i>Menu</button>
+        <button class="sn" id="sn-orders"   onclick="stuGo('orders')"><i class="fas fa-receipt"></i>My Orders</button>
+        <button class="sn" id="sn-profile"  onclick="stuGo('profile')"><i class="fas fa-user"></i>Profile</button>
+      </nav>
+      <div class="sb-foot">
+        <button class="logout-btn" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
     </aside>
-    <main class="main-area" id="main"></main>
+    <main class="main" id="s-main"></main>
   </div>
-
-  <!-- MOBILE BOTTOM NAV -->
-  <div class="mob-nav">
-    <div class="mob-nav-inner" id="mob-nav"></div>
+  <div class="mob-bar">
+    <button class="mb" onclick="stuGo('canteens')"><i class="fas fa-store"></i>Canteens</button>
+    <button class="mb" onclick="stuGo('menu')"><i class="fas fa-utensils"></i>Menu</button>
+    <button class="mb" onclick="stuGo('orders')"><i class="fas fa-receipt"></i>Orders</button>
+    <button class="mb" onclick="stuGo('profile')"><i class="fas fa-user"></i>Profile</button>
+    <button class="mb logout-mb" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i>Logout</button>
   </div>
 </div>
 
-<!-- ══════ CART SIDEBAR ══════ -->
-<div class="cart-ov" id="cart-ov" onclick="toggleCart()"></div>
+<!-- CART SIDEBAR -->
+<div id="cart-ov" onclick="toggleCart()"></div>
 <div id="cart-sb">
-  <div class="cart-hd">
-    <h3><i class="fas fa-shopping-cart" style="color:var(--orange);margin-right:6px"></i>Your Cart</h3>
-    <button class="mclose" onclick="toggleCart()"><i class="fas fa-times"></i></button>
-  </div>
-  <div class="cart-bd" id="cart-bd"></div>
-  <div class="cart-ft hidden" id="cart-ft">
-    <div class="fg">
-      <label>Pickup Time Slot</label>
+  <div class="cart-hd"><h3><i class="fas fa-shopping-cart" style="color:var(--orange);margin-right:6px"></i>Your Cart</h3><button class="x-btn" onclick="toggleCart()"><i class="fas fa-times"></i></button></div>
+  <div id="cart-body-el" class="cart-bd"></div>
+  <div id="cart-foot-el" class="cart-ft hidden">
+    <div class="fg"><label>Pickup Time Slot</label>
       <select id="slot-sel">
-        <option value="">Select a time slot...</option>
-        <option>8:30 AM – 8:45 AM</option>
-        <option>9:00 AM – 9:15 AM</option>
-        <option>9:15 AM – 9:30 AM</option>
-        <option>10:00 AM – 10:15 AM</option>
-        <option>10:30 AM – 10:45 AM</option>
-        <option>11:00 AM – 11:15 AM</option>
-        <option>11:30 AM – 11:45 AM</option>
-        <option>12:00 PM – 12:15 PM</option>
-        <option>12:15 PM – 12:30 PM</option>
-        <option>12:30 PM – 12:45 PM</option>
-        <option>1:00 PM – 1:15 PM</option>
-        <option>1:30 PM – 1:45 PM</option>
-        <option>2:00 PM – 2:15 PM</option>
-        <option>3:00 PM – 3:15 PM</option>
-        <option>4:00 PM – 4:15 PM</option>
-        <option>5:00 PM – 5:15 PM</option>
+        <option value="">Select time slot...</option>
+        <option>8:30 AM – 8:45 AM</option><option>9:00 AM – 9:15 AM</option>
+        <option>9:15 AM – 9:30 AM</option><option>10:00 AM – 10:15 AM</option>
+        <option>10:30 AM – 10:45 AM</option><option>11:00 AM – 11:15 AM</option>
+        <option>11:30 AM – 11:45 AM</option><option>12:00 PM – 12:15 PM</option>
+        <option>12:15 PM – 12:30 PM</option><option>1:00 PM – 1:15 PM</option>
+        <option>2:00 PM – 2:15 PM</option><option>3:00 PM – 3:15 PM</option>
+        <option>4:00 PM – 4:15 PM</option><option>5:00 PM – 5:15 PM</option>
       </select>
     </div>
-    <div class="cart-tr">
-      <span>Total</span>
-      <strong id="cart-total">₹0</strong>
-    </div>
-    <button class="btn btn-primary btn-full" onclick="placeOrder()">
-      <i class="fas fa-check-circle"></i> Place Order
-    </button>
+    <div class="cart-total-row"><span>Total</span><strong id="cart-total-el">₹0</strong></div>
+    <button class="btn btn-primary btn-full" onclick="placeOrder()"><i class="fas fa-check-circle"></i> Place Order</button>
   </div>
 </div>
 
-<!-- ══════ MODAL ══════ -->
-<div class="moverlay hidden" id="modal-ov" onclick="modalOvClick(event)">
-  <div class="mbox" id="modal-bx">
-    <div class="mhead">
-      <h3 id="modal-title"></h3>
-      <button class="mclose" onclick="closeModal()"><i class="fas fa-times"></i></button>
+<!-- ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+     OPERATOR APP
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ -->
+<div id="pg-operator" class="hidden app-pg">
+  <nav class="topbar">
+    <div class="tb-logo"><div class="mk">🍔</div><span>Quick<em>Bite</em></span></div>
+    <div class="tb-right">
+      <div class="upill">
+        <div class="uav op-color" id="op-av">O</div>
+        <div><div class="uname" id="op-nm">Operator</div><div class="urole" id="op-can-lbl">Canteen</div></div>
+      </div>
     </div>
-    <div id="modal-body"></div>
+  </nav>
+  <div class="app-body">
+    <aside class="sidebar">
+      <div class="sb-info">
+        <div class="sb-role">Operator Panel</div>
+        <div class="sb-sub" id="op-can-sb"></div>
+      </div>
+      <nav class="sb-nav">
+        <button class="sn active" id="sn-op-orders" onclick="opGo('orders')"><i class="fas fa-list-alt"></i>Incoming Orders</button>
+        <button class="sn" id="sn-op-menu"   onclick="opGo('menu')"><i class="fas fa-hamburger"></i>Menu & Items</button>
+        <button class="sn" id="sn-op-verify" onclick="opGo('verify')"><i class="fas fa-qrcode"></i>Verify Token</button>
+      </nav>
+      <div class="sb-foot">
+        <button class="logout-btn" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
+    </aside>
+    <main class="main" id="op-main"></main>
+  </div>
+  <div class="mob-bar">
+    <button class="mb" onclick="opGo('orders')"><i class="fas fa-list-alt"></i>Orders</button>
+    <button class="mb" onclick="opGo('menu')"><i class="fas fa-hamburger"></i>Menu</button>
+    <button class="mb" onclick="opGo('verify')"><i class="fas fa-qrcode"></i>Verify</button>
+    <button class="mb logout-mb" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i>Logout</button>
   </div>
 </div>
 
-<!-- ══════ JAVASCRIPT ══════ -->
-<script src="{% static 'js/script.js' %}"></script>
+<!-- ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+     ADMIN APP
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ -->
+<div id="pg-admin" class="hidden app-pg">
+  <nav class="topbar">
+    <div class="tb-logo"><div class="mk">🍔</div><span>Quick<em>Bite</em></span></div>
+    <div class="tb-right">
+      <div class="upill">
+        <div class="uav ad-color" id="ad-av">A</div>
+        <div><div class="uname" id="ad-nm">Admin</div><div class="urole">Administrator</div></div>
+      </div>
+    </div>
+  </nav>
+  <div class="app-body">
+    <aside class="sidebar">
+      <div class="sb-info"><div class="sb-role">Admin Panel</div><div class="sb-sub" style="color:var(--purple)">Full Access</div></div>
+      <nav class="sb-nav">
+        <button class="sn active" id="sn-ad-dash"     onclick="adGo('dash')"><i class="fas fa-chart-pie"></i>Dashboard</button>
+        <button class="sn" id="sn-ad-users"    onclick="adGo('users')"><i class="fas fa-users"></i>All Users</button>
+        <button class="sn" id="sn-ad-ops"      onclick="adGo('ops')"><i class="fas fa-utensils"></i>All Operators</button>
+        <button class="sn" id="sn-ad-orders"   onclick="adGo('orders')"><i class="fas fa-receipt"></i>All Orders</button>
+        <button class="sn" id="sn-ad-canteens" onclick="adGo('canteens')"><i class="fas fa-store"></i>Manage Canteens</button>
+      </nav>
+      <div class="sb-foot">
+        <button class="logout-btn" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
+    </aside>
+    <main class="main" id="ad-main"></main>
+  </div>
+  <div class="mob-bar">
+    <button class="mb" onclick="adGo('dash')"><i class="fas fa-chart-pie"></i>Dash</button>
+    <button class="mb" onclick="adGo('users')"><i class="fas fa-users"></i>Users</button>
+    <button class="mb" onclick="adGo('orders')"><i class="fas fa-receipt"></i>Orders</button>
+    <button class="mb" onclick="adGo('canteens')"><i class="fas fa-store"></i>Canteens</button>
+    <button class="mb logout-mb" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i>Logout</button>
+  </div>
+</div>
 
+<!-- ░░ MODAL ░░ -->
+<div id="modal-ov" class="moverlay hidden" onclick="modalBg(event)">
+  <div class="mbox" id="mbox">
+    <div class="mhead"><h3 id="mtitle"></h3><button class="x-btn" onclick="closeModal()"><i class="fas fa-times"></i></button></div>
+    <div id="mbody"></div>
+  </div>
+</div>
+
+<script src="/static/js/script.js"></script>
 </body>
 </html>
